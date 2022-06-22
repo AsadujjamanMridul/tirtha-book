@@ -1,0 +1,44 @@
+.title-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    margin-right: 44px;
+}
+
+.chapter-container-div {
+    margin: 20px 44px 0px 32px;
+    border: 1px solid #E8DAFF;
+}
+
+.chapter-name {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 48px;
+    margin: 0 24px;
+
+    color: #333333;
+    &:hover{
+        color: #3A57E8;
+        cursor: pointer;
+    }
+}
+
+.chapter-upload-date {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 0;
+    margin-right: 24px;
+
+    color: #828282;
+}
+
+.right-icon{
+    margin-left: 24px;
+    margin-bottom: 6px;
+}

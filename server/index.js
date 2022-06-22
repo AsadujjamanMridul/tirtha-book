@@ -142,7 +142,7 @@ app.listen(port, () => {
 //         }
 
 //     ],
-//     "thumbnail":"https://xyz.com",
+//     "Thumbnail":"https://xyz.com",
 //     "Ratings":[ ],
 //     "Views":[],
 //     "Likes":[],

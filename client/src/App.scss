@@ -32,6 +32,24 @@
   }
 }
 
+.btn-light{
+  background-color: #ffffff;
+  padding: 8px 28px;
+  border-radius: 3px;
+  color: #666666;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
+  &:hover {
+    background-color: #edf6f9;
+  }
+}
+
+.table{
+  margin: 0 !important;
+}
+
 .App {
   text-align: center;
 }

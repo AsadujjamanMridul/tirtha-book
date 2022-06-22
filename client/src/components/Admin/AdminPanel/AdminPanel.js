@@ -10,15 +10,16 @@ import { UserOutlined } from '@ant-design/icons';
 import NovelList from '../Novels/NovelList/NovelList';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import Dashboard from '../Dashboard/Dashboard';
 
 const { Header, Footer, Sider, Content } = Layout;
 
 const AdminPanel = () => {
 
     const [headerTitle, setHeaderTitle] = useState('Timeline of Genorisity');
-    const [innerContent, setInnerContent] = useState(<NovelList />);
+    const [innerContent, setInnerContent] = useState(<Dashboard />);
 
-    const handleMenu = (title, component) => {
+    const handleInnerContent = (title, component) => {
         setHeaderTitle(title);
         setInnerContent(component);
     }
@@ -119,7 +120,7 @@ const AdminPanel = () => {
                         }} />
                     </Link>
 
-                    <Sidebar handleMenu={handleMenu} />
+                    <Sidebar handleInnerContent={handleInnerContent} />
 
                 </Sider>
                 <Content>

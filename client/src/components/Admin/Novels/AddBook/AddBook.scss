@@ -1,0 +1,77 @@
+.addBook-title {
+    width: 144px;
+    height: 36px;
+    margin: 32px 0 24px 32px;
+
+    /* 28 */
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 36px;
+
+    /* identical to box height, or 129% */
+
+    /* Gray 1 */
+    color: #333333;
+}
+
+.input-title {
+    width: 56px;
+    height: 24px;
+    margin-left: 32px;
+
+    /* 20 */
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+
+    /* identical to box height, or 120% */
+
+    /* Gray 1 */
+    color: #333333;
+}
+
+.input-book-cover {
+    width: 250px;
+    height: 38px;
+    margin-left: 32px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+
+    /* Gray 4 */
+    border: 1px solid #bdbdbd;
+    border-radius: 3px;
+}
+
+.input-book-title {
+    border: 1px solid #999999;
+    border-radius: 4px;
+    width: 1098px;
+    height: 48px;
+    margin-left: 32px;
+    margin-top: 20px;
+    margin-bottom: 24px;
+}
+
+.input-book-synopsis {
+    border: 1px solid #999999;
+    border-radius: 4px;
+    width: 1098px;
+    height: 211px;
+    margin-left: 32px;
+    margin-top: 20px;
+    margin-bottom: 24px;
+}
+
+.add-book-subheading {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin-left: 32px;
+    color: #4f4f4f;
+}
