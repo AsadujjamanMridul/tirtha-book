@@ -1,9 +1,25 @@
 const express = require('express');
+const fileUpload= require('express-fileupload');
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
+
+// const multer  = require('multer');
+const path= require('path');
+// const storage= multer.diskStorage({
+//   destination:(req,file,res)=>{
+//     res(null,"images");
+//   },
+//   filename:(req,file,res)=>{
+//     console.log(file);
+//     const name=path.extname(file.originalname) + Date.now();
+//     res(null, name);
+//   }
+
+// });
+// const upload = multer({ storage : storage });
 
 const app = express();
 const port =process.env.PORT || 5000;
@@ -12,6 +28,8 @@ const port =process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(express.static('images'));
+app.use(fileUpload());
 
 
 
@@ -70,6 +88,8 @@ async function run() {
 
       });
 
+
+      //adding new chapter
       app.patch('/api/novels/:id', async(req,res)=>{
         const id=req.params.id;
         const query ={_id:ObjectId(id)};
@@ -92,6 +112,35 @@ async function run() {
       });
 
 
+      //upload image to server
+      app.patch('/api/novels/:id/images', async(req,res)=>{
+
+        const imageFile=req.files.image;
+        console.log(imageFile);
+
+        const id=req.params.id;
+        const query ={_id:ObjectId(id)};
+        const options ={upsert:true};
+        const name=Date.now()+imageFile.name;
+        const updateDoc={
+          $set:{
+            thumbnail: name
+            
+          }
+        };
+
+        
+        imageFile.mv(`${__dirname}/images/${name}`,err=>{
+          if (err){
+            console.log(err);
+          }
+        });
+        const result=await novelsCollection.updateOne(query,updateDoc,options);
+        console.log("updated");
+        res.json(result)
+      });
+
+      //delete a novel
       app.delete('/api/novels/:id',async(req,res)=>{
         const id=req.params.id;
         const query ={_id:ObjectId(id)};
@@ -108,6 +157,7 @@ async function run() {
   
   }
   
+
   run().catch(console.dir);
 
 
@@ -119,6 +169,7 @@ app.listen(port, () => {
     console.log('Running Server onn port', port);
 })
 
+<<<<<<< HEAD
 
 
 // {
@@ -166,3 +217,5 @@ app.listen(port, () => {
 //     ]
 
 // }
+=======
+>>>>>>> 8b316c092ac3d99d8d69140450c43640db482aa0
