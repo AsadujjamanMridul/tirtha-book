@@ -20,7 +20,6 @@ app.use(bodyParser.json());
 app.use('/api/images',express.static('novels_images'));
 app.use('/api/images',express.static('artwork_images'));
 app.use(fileUpload());
-app.use("/api/images", express.static(path.join(__dirname, "novels_images")));
 
 
 
@@ -126,18 +125,6 @@ async function run() {
       app.delete('/api/novels/:id',async(req,res)=>{
         const id=req.params.id;
         const query ={_id:ObjectId(id)};
-<<<<<<< HEAD
-        const options ={upsert:true};
-        const name=Date.now()+imageFile.name;
-        const updateDoc={
-          $set:{
-            thumbnail: name
-          }
-        };
-
-
-        imageFile.mv(`${__dirname}/images/${name}`,err=>{
-=======
         const result=await novelsCollection.deleteOne(query);
         console.log("deleted: ",result);
         res.json(result);
@@ -164,11 +151,9 @@ async function run() {
        
         
         image.mv(`${__dirname}/artwork_images/${imagename}`,err=>{
->>>>>>> 7e083af5abd2ed0677fa01e94280f254a65e4538
           if (err){
             console.log(err);
           }
-          // return res.send({name: name, path: `/${name}`})
         });
   
         const views=0;
@@ -185,11 +170,6 @@ async function run() {
         response.send(result);
       });
 
-<<<<<<< HEAD
-
-      //delete a novel
-      app.delete('/api/novels/:id',async(req,res)=>{
-=======
       //get all the artwork
       app.get('/api/artworks', async(request,response)=>{
 
@@ -217,7 +197,6 @@ async function run() {
 
       //delete an artwork
       app.delete('/api/artworks/:id',async(req,res)=>{
->>>>>>> 7e083af5abd2ed0677fa01e94280f254a65e4538
         const id=req.params.id;
         const query ={_id:ObjectId(id)};
         const result=await artworksCollection.deleteOne(query);
@@ -247,11 +226,8 @@ app.listen(port, () => {
     console.log('Running Server onn port', port);
 })
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 7e083af5abd2ed0677fa01e94280f254a65e4538
 // {
 //     "Name":"Stupore E Tremori",
 //     "Author":"Tirtha Chowdhury",
@@ -297,11 +273,4 @@ app.listen(port, () => {
 //     ]
 
 // }
-<<<<<<< HEAD
-=======
 
-
-
-
-
->>>>>>> 7e083af5abd2ed0677fa01e94280f254a65e4538
