@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AddBook from '../AddBook/AddBook';
 import AddChapter from '../AddChapter/AddChapter';
 import Chapters from '../Chapters/Chapters';
 import './NovelList.scss'
 import { Button, Popover } from 'antd';
 import { message, Collapse, Modal } from 'antd';
+import {SidebarInnerContent} from '../../../../App'
+import { Badge } from '@mantine/core';
 
-const NovelList = ({ handleInnerContent }) => {
+const NovelList = () => {
+
+    const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
 
     const [novelList, setNovelList] = useState([])
     let count = 1;
@@ -49,7 +53,7 @@ const NovelList = ({ handleInnerContent }) => {
                 display: 'flex',
                 justifyContent: 'flex-end'
             }}>
-                <button onClick={() => handleInnerContent('Add Book', <AddBook handleInnerContent={handleInnerContent} />)} className="btn btn-primary">+Add Novel</button>
+                <button onClick={() => setInnerContent(<AddBook/>)} className="btn btn-primary">+Add Novel</button>
             </div>
 
             <div className='chapter-container-div'>
@@ -77,16 +81,18 @@ const NovelList = ({ handleInnerContent }) => {
                                     <tr className='table-data'>
                                         <td>{count++}</td>
                                         <td>
-                                            <a href="#">{novel.Name}</a>
+                                            <a href="#">{novel.name}</a>
                                         </td>
-                                        <td>{novel.Chapters.length}</td>
-                                        <td>{novel.Author}</td>
-                                        <td>{novel.Genre}</td>
+                                        <td>{novel.chapters.length}</td>
+                                        <td>{novel.author}</td>
+                                        <td>{novel.genre.map(gen=> {
+                                           return <Badge className='me-2' size="lg" color="gray">{gen}</Badge>
+                                        })}</td>
                                         <td>
                                             <Popover placement="bottomRight" content={
                                                 <div className='popOverContent'>
-                                                    <p className='popOverOption' onClick={() => { handleInnerContent() }}>Edit</p>
-                                                    <p className='popOverOption' onClick={() => { handleInnerContent('Chapters', <Chapters novel={novel} handleInnerContent={handleInnerContent} />) }}>Chapters</p>
+                                                    <p className='popOverOption' onClick={() => { setInnerContent() }}>Edit</p>
+                                                    <p className='popOverOption' onClick={() => { setInnerContent(<Chapters/>) }}>Chapters</p>
                                                     <p className='mb-2 popOverOption' onClick={() => deleteNovel(novel._id)}>Delete</p>
                                                 </div>
                                             } trigger="click">

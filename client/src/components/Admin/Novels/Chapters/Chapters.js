@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AddChapter from '../AddChapter/AddChapter';
 import './Chapters.scss'
 import { RightOutlined } from '@ant-design/icons';
+import {SidebarInnerContent} from '../../../../App'
 
-const Chapters = ({ handleInnerContent, novel }) => {
+const Chapters = ({ novel }) => {
 
-    const totalChapters = novel.Chapters.length
+    const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
+
     let counter = 1
 
     return (
         <div className='min-vh-100 w-100'>
             <div className='title-with-button'>
                 <h3 className='addBook-title'>Chapters</h3>
-                <div><button onClick={() => handleInnerContent('Add Chapter', <AddChapter handleInnerContent={handleInnerContent} />)} className="btn btn-primary">+Add Chapter</button>
+                <div><button onClick={() => setInnerContent(<AddChapter/>)} className="btn btn-primary">+Add Chapter</button>
                 </div>
             </div>
 

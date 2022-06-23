@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
-import NovelList from '../NovelList/NovelList';
-import './AddBook.scss'
-import { SidebarInnerContent } from '../../../../App'
-import { MultiSelect } from '@mantine/core';
+import './AddArtwork.scss'
 
-const AddBook = () => {
+import {SidebarInnerContent} from '../../../../App'
+import NovelList from '../../Novels/NovelList/NovelList';
+
+const AddArtwork = () => {
 
     const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
 
@@ -12,7 +12,7 @@ const AddBook = () => {
     const [bookTitle, setBookTitle] = useState('')
     const [bookSynopsis, setBookSynopsis] = useState('')
     const [bookGenre, setBookGenre] = useState('')
-    const [bookTags, setBookTags] = useState([''])
+    const [bookTags, setBookTags] = useState([])
 
     const handleSubmit = () => {
         const newBookData = {
@@ -45,7 +45,6 @@ const AddBook = () => {
 
             <h4 className='input-title'>Tags</h4>
             <h5 className='add-book-subheading'>Each novel is limited to 25 tags. You can search for tags using the search bar below.</h5>
-
             <input className='input-book-title form-control' placeholder='Add Tags' onChange={(e) => { setBookTags(e.target.value) }} />
 
             <button onClick={() => handleSubmit()} style={{ margin: '54px 32px' }} type="submit" className='btn btn-primary'>Add Book</button>
@@ -55,4 +54,4 @@ const AddBook = () => {
     );
 };
 
-export default AddBook;
+export default AddArtwork;

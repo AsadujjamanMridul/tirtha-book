@@ -5,24 +5,17 @@ import "antd/dist/antd.css";
 import { Layout } from 'antd';
 import { Avatar } from 'antd';
 import { Col, Divider, Row } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 
-import NovelList from '../Novels/NovelList/NovelList';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import Dashboard from '../Dashboard/Dashboard';
+import { SidebarInnerContent } from '../../../App'
 
 const { Header, Footer, Sider, Content } = Layout;
 
 const AdminPanel = () => {
 
     const [headerTitle, setHeaderTitle] = useState('Timeline of Genorisity');
-    const [innerContent, setInnerContent] = useState(<Dashboard />);
-
-    const handleInnerContent = (title, component) => {
-        setHeaderTitle(title);
-        setInnerContent(component);
-    }
+    const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
 
     return (
         <Layout style={{
@@ -120,7 +113,7 @@ const AdminPanel = () => {
                         }} />
                     </Link>
 
-                    <Sidebar handleInnerContent={handleInnerContent} />
+                    <Sidebar/>
 
                 </Sider>
                 <Content>

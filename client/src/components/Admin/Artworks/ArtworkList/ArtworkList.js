@@ -1,17 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import './Artworks.scss'
-import AddBook from '../Novels/AddBook/AddBook';
-import { message, Collapse} from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
+import './ArtworkList.scss'
+import AddBook from '../../Novels/AddBook/AddBook';
+import { message, Collapse } from 'antd';
 import { Button, Popover } from 'antd';
-import AddChapter from '../Novels/AddChapter/AddChapter';
+import AddChapter from '../../Novels/AddChapter/AddChapter';
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal, ModalGateway } from "react-images";
-import { photos } from "./photos";
+import { SidebarInnerContent } from '../../../../App'
 
-const Artworks = ({ handleInnerContent }) => {
+import Lightbox from '@seafile/react-image-lightbox';
+import '@seafile/react-image-lightbox/style.css';
 
+const Artworks = () => {
+
+    const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
     const [novelList, setNovelList] = useState([])
     let count = 1;
+
+    const images = [
+        '//placekitten.com/1500/500',
+        '//placekitten.com/4000/3000',
+        '//placekitten.com/800/1200',
+        '//placekitten.com/1500/1500',
+    ];
+
+    const [lightboxIsOpen, setLightBoxIsOpen] = useState(false)
 
     useEffect(() => {
         fetch('http://localhost:5000/api/novels')
@@ -51,11 +64,11 @@ const Artworks = ({ handleInnerContent }) => {
                 display: 'flex',
                 justifyContent: 'flex-end'
             }}>
-                <button onClick={() => handleInnerContent('Add Artworks', <AddBook handleInnerContent={handleInnerContent} />)} className="btn btn-primary">+Add Artworks</button>
+                <button onClick={() => setInnerContent(<AddBook />)} className="btn btn-primary">+Add Artworks</button>
             </div>
 
             <div className='artwork-container-div bordered'>
-            <table className="table">
+                <table className="table">
                     <tbody>
                         <tr>
                             <td colSpan="6">
@@ -81,18 +94,25 @@ const Artworks = ({ handleInnerContent }) => {
                                         <td>
                                             <a href="#">{novel.Name}</a>
                                         </td>
-                                        <td>{novel.Chapters.length}</td>
+                                        <td>{novel.chapters.length}</td>
                                         <td>{novel.Author}</td>
                                         <td className='preview-text'>Preview</td>
+                                        {lightboxIsOpen && (
+                                            <Lightbox
+                                                mainSrc={images[0]}
+                                                onCloseRequest={() => this.setState({ isOpen: false })}
+                                            />
+                                        )}
+
                                         <td>
                                             <Popover placement="bottomRight" content={
                                                 <div className='popOverContent'>
-                                                    <p className='popOverOption' onClick={() => { handleInnerContent() }}>Edit</p>
-                                                    <p className='popOverOption' onClick={() => { handleInnerContent('Chapters', <AddChapter novel={novel} handleInnerContent={handleInnerContent} />) }}>Chapters</p>
+                                                    <p className='popOverOption' onClick={() => { setInnerContent() }}>Edit</p>
+                                                    <p className='popOverOption' onClick={() => { setInnerContent(<AddChapter novel={novel} />) }}>Chapters</p>
                                                     <p className='mb-2 popOverOption' onClick={() => deleteNovel(novel._id)}>Delete</p>
                                                 </div>
                                             } trigger="click">
-                                                <img className='px-1' src={require('../../../assets/svg/Action_Button.svg').default} alt="Actions" />
+                                                <img className='px-1' src={require('../../../../assets/svg/Action_Button.svg').default} alt="Actions" />
                                             </Popover>
                                         </td>
                                     </tr>

@@ -1,11 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import './AddChapter.scss'
 import axios from 'axios';
 import { RichTextEditor, Editor } from '@mantine/rte';
 import Chapters from '../Chapters/Chapters';
 import NovelList from '../NovelList/NovelList';
+import {SidebarInnerContent} from '../../../../App'
 
-const AddChapter = ({ handleInnerContent }) => {
+const AddChapter = () => {
+
+    const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
 
     const handleImageUpload = (file) =>
         new Promise((resolve, reject) => {
@@ -42,7 +45,7 @@ const AddChapter = ({ handleInnerContent }) => {
 
             <button onClick={() => handleSubmit()} style={{ margin: '54px 32px' }} type="submit" className='btn btn-primary'>Publish</button>
 
-            <button onClick={() => handleInnerContent('Add Book', <NovelList  handleInnerContent={handleInnerContent} />)} style={{ margin: '54px 0' }} className='btn btn-light'>Cancel</button>
+            <button onClick={() => setInnerContent(<NovelList/>)} style={{ margin: '54px 0' }} className='btn btn-light'>Cancel</button>
         </div>
     );
 };
