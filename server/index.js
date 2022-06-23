@@ -30,6 +30,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.static('images'));
 app.use(fileUpload());
+app.use("/api/images", express.static(path.join(__dirname, "novels_images")));
 
 
 
@@ -125,20 +126,21 @@ async function run() {
         const updateDoc={
           $set:{
             thumbnail: name
-            
           }
         };
 
-        
+
         imageFile.mv(`${__dirname}/images/${name}`,err=>{
           if (err){
             console.log(err);
           }
+          // return res.send({name: name, path: `/${name}`})
         });
         const result=await novelsCollection.updateOne(query,updateDoc,options);
         console.log("updated");
         res.json(result)
       });
+
 
       //delete a novel
       app.delete('/api/novels/:id',async(req,res)=>{
@@ -168,9 +170,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log('Running Server onn port', port);
 })
-
-<<<<<<< HEAD
-
 
 // {
 //     "Name":"Stupore E Tremori",
@@ -217,5 +216,3 @@ app.listen(port, () => {
 //     ]
 
 // }
-=======
->>>>>>> 8b316c092ac3d99d8d69140450c43640db482aa0
