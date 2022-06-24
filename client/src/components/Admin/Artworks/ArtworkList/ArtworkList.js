@@ -1,42 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
-import './ArtworkList.scss'
-import AddBook from '../../Novels/AddBook/AddBook';
-import { message, Collapse } from 'antd';
-import { Button, Popover } from 'antd';
-import AddChapter from '../../Novels/AddChapter/AddChapter';
-import Gallery from "react-photo-gallery";
-import Carousel, { Modal, ModalGateway } from "react-images";
+import { message, Popover } from 'antd';
 import { SidebarInnerContent } from '../../../../App'
+import { Modal } from '@mantine/core'
+import AddArtwork from '../AddArtwork/AddArtwork';
 
-import Lightbox from '@seafile/react-image-lightbox';
-import '@seafile/react-image-lightbox/style.css';
+import './ArtworkList.scss'
+
 
 const Artworks = () => {
 
-    const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
-    const [novelList, setNovelList] = useState([])
     let count = 1;
-
-    const images = [
-        '//placekitten.com/1500/500',
-        '//placekitten.com/4000/3000',
-        '//placekitten.com/800/1200',
-        '//placekitten.com/1500/1500',
-    ];
-
+    const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
+    const [artworkList, setArtworkList] = useState([])
     const [lightboxIsOpen, setLightBoxIsOpen] = useState(false)
+    const [singleArtwork, setSingleArtwork] = useState(null)
+    const [searchItem, setSearchItem] = useState("")
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/novels')
+        fetch('https://radiant-spire-58573.herokuapp.com/api/artworks')
             .then(res => res.json())
             .then(data => {
-                setNovelList(data);
-                console.log(data);
+                setArtworkList(data);
             });
     }, [])
 
     const deleteNovel = (id) => {
-        const url = `http://localhost:5000/api/novels/${id}`
+        const url = `https://radiant-spire-58573.herokuapp.com/api/artworks/${id}`
 
         fetch(url, {
             method: "DELETE"
@@ -44,12 +33,12 @@ const Artworks = () => {
             .then(res => res.json())
             .then(result => {
                 if (result) {
-                    fetch('http://localhost:5000/api/novels')
+                    fetch('https://radiant-spire-58573.herokuapp.com/api/artworks')
                         .then(res => res.json())
                         .then(data => {
-                            setNovelList(data);
+                            setArtworkList(data);
                             message.success({
-                                content: 'Book has been removed successfully!',
+                                content: 'Artwork has been removed successfully!',
                                 className: 'message'
                             });
                         });
@@ -59,12 +48,23 @@ const Artworks = () => {
 
     return (
         <div>
+            {singleArtwork && <Modal
+                opened={lightboxIsOpen}
+                onClose={() => setLightBoxIsOpen(false)}
+                title={singleArtwork.title}
+                centered
+            >
+                <h5 className='artwork-subheader'>{singleArtwork.subheader}</h5>
+                <img className='img-fluid' src={`https://radiant-spire-58573.herokuapp.com/api/images/${singleArtwork.imagename}`} alt="PreviewImage" />
+            </Modal>}
+
+
             <div style={{
                 padding: '24px 40px',
                 display: 'flex',
                 justifyContent: 'flex-end'
             }}>
-                <button onClick={() => setInnerContent(<AddBook />)} className="btn btn-primary">+Add Artworks</button>
+                <button onClick={() => setInnerContent(<AddArtwork />)} className="btn btn-primary">+Add Artworks</button>
             </div>
 
             <div className='artwork-container-div bordered'>
@@ -74,42 +74,44 @@ const Artworks = () => {
                             <td colSpan="6">
                                 <div className='d-flex justify-content-between mx-2 mt-2'>
                                     <h2 className='table-title'>Artworks</h2>
-                                    <input className='search' placeholder='Search' type={'text'}></input>
+                                    <input className='search' placeholder='Search' type='text' onChange={event => setSearchItem(event.target.value)}></input>
                                 </div>
                             </td>
                         </tr>
                         <tr className='table-header roboto-16-500 txt-dark px-2'>
                             <th>#</th>
-                            <th>Name</th>
+                            <th>Title</th>
                             <th>Views</th>
                             <th>Artist</th>
                             <th>Preview Option</th>
                             <th>Actions</th>
                         </tr>
                         {
-                            novelList.map(novel => {
+                            artworkList.filter(artwork => {
+                                if (searchItem === "") {
+                                    return artwork
+                                }
+                                else if (artwork.title?.toLowerCase().includes(searchItem.toLowerCase())) {
+                                    return artwork
+                                }
+                            }).map(artwork => {
+
                                 return (
                                     <tr className='table-data'>
                                         <td>{count++}</td>
                                         <td>
-                                            <a href="#">{novel.Name}</a>
+                                            <a href="#">{artwork.title}</a>
                                         </td>
-                                        <td>{novel.chapters.length}</td>
-                                        <td>{novel.Author}</td>
-                                        <td className='preview-text'>Preview</td>
-                                        {lightboxIsOpen && (
-                                            <Lightbox
-                                                mainSrc={images[0]}
-                                                onCloseRequest={() => this.setState({ isOpen: false })}
-                                            />
-                                        )}
-
+                                        <td>{artwork.views}</td>
+                                        <td>{artwork.artist}</td>
+                                        <td className='preview-text' onClick={() => {
+                                            setLightBoxIsOpen(true)
+                                            setSingleArtwork(artwork)
+                                        }}>Preview</td>
                                         <td>
-                                            <Popover placement="bottomRight" content={
+                                            <Popover placement="bottomRight" className='cursor-pointer' content={
                                                 <div className='popOverContent'>
-                                                    <p className='popOverOption' onClick={() => { setInnerContent() }}>Edit</p>
-                                                    <p className='popOverOption' onClick={() => { setInnerContent(<AddChapter novel={novel} />) }}>Chapters</p>
-                                                    <p className='mb-2 popOverOption' onClick={() => deleteNovel(novel._id)}>Delete</p>
+                                                    <p className='my-1 popOverOption' onClick={() => deleteNovel(artwork._id)}>Delete</p>
                                                 </div>
                                             } trigger="click">
                                                 <img className='px-1' src={require('../../../../assets/svg/Action_Button.svg').default} alt="Actions" />

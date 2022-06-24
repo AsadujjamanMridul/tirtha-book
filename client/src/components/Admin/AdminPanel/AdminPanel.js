@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import './AdminPanel.scss'
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 
 import { Layout } from 'antd';
 import { Avatar } from 'antd';
@@ -80,7 +80,8 @@ const AdminPanel = () => {
                         // console.log(collapsed, type);
                     }}
                     style={{
-                        backgroundColor: "#fff"
+                        backgroundColor: "#fff",
+                        zIndex: 0
                     }}
                 >
                     <Link to='/'>

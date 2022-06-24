@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import AddBook from '../AddBook/AddBook';
+import AddNovel from '../AddNovel/AddNovel';
 import AddChapter from '../AddChapter/AddChapter';
 import Chapters from '../Chapters/Chapters';
 import './NovelList.scss'
 import { Button, Popover } from 'antd';
 import { message, Collapse, Modal } from 'antd';
-import {SidebarInnerContent} from '../../../../App'
+import { SidebarInnerContent } from '../../../../App'
 import { Badge } from '@mantine/core';
 
 const NovelList = () => {
@@ -13,19 +13,19 @@ const NovelList = () => {
     const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
 
     const [novelList, setNovelList] = useState([])
+    const [searchItem, setSearchItem] = useState("")
     let count = 1;
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/novels')
+        fetch('https://radiant-spire-58573.herokuapp.com/api/novels')
             .then(res => res.json())
             .then(data => {
                 setNovelList(data);
-                console.log(data);
             });
     }, [])
 
     const deleteNovel = (id) => {
-        const url = `http://localhost:5000/api/novels/${id}`
+        const url = `https://radiant-spire-58573.herokuapp.com/api/novels/${id}`
 
         fetch(url, {
             method: "DELETE"
@@ -33,7 +33,7 @@ const NovelList = () => {
             .then(res => res.json())
             .then(result => {
                 if (result) {
-                    fetch('http://localhost:5000/api/novels')
+                    fetch('https://radiant-spire-58573.herokuapp.com/api/novels')
                         .then(res => res.json())
                         .then(data => {
                             setNovelList(data);
@@ -53,7 +53,7 @@ const NovelList = () => {
                 display: 'flex',
                 justifyContent: 'flex-end'
             }}>
-                <button onClick={() => setInnerContent(<AddBook/>)} className="btn btn-primary">+Add Novel</button>
+                <button onClick={() => setInnerContent(<AddNovel />)} className="btn btn-primary">+Add Novel</button>
             </div>
 
             <div className='chapter-container-div'>
@@ -63,36 +63,43 @@ const NovelList = () => {
                             <td colSpan="6">
                                 <div className='d-flex justify-content-between mx-2 mt-2'>
                                     <h2 className='table-title'>Novel List</h2>
-                                    <input className='search' placeholder='Search' type={'text'}></input>
+                                    <input className='search' placeholder='Search' type='text' onChange={event => setSearchItem(event.target.value)}></input>
                                 </div>
                             </td>
                         </tr>
                         <tr className='table-header roboto-16-500 txt-dark'>
-                            <th scope="col">#</th>
+                            <th scope="col" className='text-center'>#</th>
                             <th scope="col">Name</th>
                             <th scope="col">Chapters</th>
                             <th scope="col">Author</th>
                             <th scope="col">Genre</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col" className='text-center'>Actions</th>
                         </tr>
                         {
-                            novelList.map(novel => {
+                            novelList.filter(novel => {
+                                if (searchItem === "") {
+                                    return novel
+                                }
+                                else if (novel.name?.toLowerCase().includes(searchItem.toLowerCase())) {
+                                    return novel
+                                }
+                            }).map(novel => {
                                 return (
                                     <tr className='table-data'>
-                                        <td>{count++}</td>
+                                        <td className='text-center'>{count++}</td>
                                         <td>
                                             <a href="#">{novel.name}</a>
                                         </td>
                                         <td>{novel.chapters.length}</td>
                                         <td>{novel.author}</td>
-                                        <td>{novel.genre.map(gen=> {
-                                           return <Badge className='me-2' size="lg" color="gray">{gen}</Badge>
+                                        <td>{novel.genre.map(gen => {
+                                            return <Badge className='me-2' size="lg" color="gray">{gen}</Badge>
                                         })}</td>
-                                        <td>
-                                            <Popover placement="bottomRight" content={
+                                        <td className='text-center'>
+                                            <Popover placement="bottomRight" className='cursor-pointer' content={
                                                 <div className='popOverContent'>
                                                     <p className='popOverOption' onClick={() => { setInnerContent() }}>Edit</p>
-                                                    <p className='popOverOption' onClick={() => { setInnerContent(<Chapters/>) }}>Chapters</p>
+                                                    <p className='popOverOption' onClick={() => { setInnerContent(<Chapters novel={novel} />) }}>Chapters</p>
                                                     <p className='mb-2 popOverOption' onClick={() => deleteNovel(novel._id)}>Delete</p>
                                                 </div>
                                             } trigger="click">

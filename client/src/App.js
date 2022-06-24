@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import './App.scss';
+import 'antd/dist/antd.min.css';
 import AdminPanel from "./components/Admin/AdminPanel/AdminPanel";
 import Dashboard from './components/Admin/Dashboard/Dashboard';
 

@@ -53,6 +53,10 @@
 
     font-family: "Roboto", sans-serif;
     font-size: 16px;
+
+    &::selection{
+        border-color: #3A57E8;
+    }
 }
 
 .popOverContent {
@@ -63,6 +67,7 @@
     line-height: 18px;
 
     color: #666666;
+    cursor: pointer;
 }
 
 .popOverOption{

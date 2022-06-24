@@ -1,55 +1,66 @@
 import React, { useContext, useState } from 'react';
-import './AddArtwork.scss'
-
-import {SidebarInnerContent} from '../../../../App'
+import { useForm } from "react-hook-form";
+import { SidebarInnerContent } from '../../../../App'
 import NovelList from '../../Novels/NovelList/NovelList';
+import Artworks from '../ArtworkList/ArtworkList';
+import './AddArtwork.scss'
 
 const AddArtwork = () => {
 
     const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
+    const [image, setImage] = useState(null)
+    const [submitBtnDisable, setSubmitBtnDisable] = useState(false)
 
-    const [bookThumbnail, setBookThumbnail] = useState(null)
-    const [bookTitle, setBookTitle] = useState('')
-    const [bookSynopsis, setBookSynopsis] = useState('')
-    const [bookGenre, setBookGenre] = useState('')
-    const [bookTags, setBookTags] = useState([])
 
-    const handleSubmit = () => {
-        const newBookData = {
-            bookTitle: bookTitle,
-            bookThumbnail: bookThumbnail,
-            bookSynopsis: bookSynopsis,
-            bookGenre: bookGenre,
-            bookTags: bookTags
-        }
-
-        console.log(newBookData);
+    const onSubmit = data => {
+        const formData = new FormData()
+        formData.append('image', image)
+        formData.append('title', data.title)
+        formData.append('artist', data.artist)
+        formData.append('subheader', data.subheader)
+        
+        setSubmitBtnDisable(true)
+        fetch('https://radiant-spire-58573.herokuapp.com/api/artworks', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setInnerContent(<Artworks/>)
+            })
+            .catch(error => {
+                console.error(error)
+            })
     }
 
     return (
         <div className='min-vh-100 w-100'>
-            <h3 className='addBook-title'>Add a Book</h3>
+            <h3 className='addBook-title w-100'>Add a Artwork</h3>
 
-            <h4 className='input-title'>Image</h4>
-            <input className='input-book-cover form-control' type={'file'} onChange={(e) => setBookThumbnail(e.target.files[0])} />
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <h4 className='input-title'>Image</h4>
+                <input className='input-book-cover form-control' type={'file'} onChange={(e) => setImage(e.target.files[0])} />
 
-            <h4 className='input-title'>Title</h4>
-            <input className='input-book-title form-control' placeholder='Add a Title' onChange={(e) => { setBookTitle(e.target.value) }} />
+                <h4 className='input-title'>Title</h4>
+                <input className='input-book-title form-control' placeholder='Add a Title' {...register("title", { required: true })} />
 
-            <h4 className='input-title'>Synopsis</h4>
-            <textarea className='input-book-synopsis form-control' placeholder='Add a Synopsis' onChange={(e) => { setBookSynopsis(e.target.value) }} />
+                <h4 className='input-title'>Subheader</h4>
+                <textarea className='input-book-synopsis form-control' placeholder='Add a Subheader' {...register("subheader", { required: true })} />
 
-            <h4 className='input-title'>Genre</h4>
-            <h5 className='add-book-subheading'>Please select the genre which best describes your story. Your options are limited to your current genres you selected from above.</h5>
-            <input className='input-book-title form-control' placeholder='Type a Genre' onChange={(e) => { setBookGenre(e.target.value) }} />
+                <h4 className='input-title'>Artist</h4>
+                <input className='input-book-title form-control' placeholder="Add Artist's Name" {...register("artist", { required: true })} />
 
-            <h4 className='input-title'>Tags</h4>
-            <h5 className='add-book-subheading'>Each novel is limited to 25 tags. You can search for tags using the search bar below.</h5>
-            <input className='input-book-title form-control' placeholder='Add Tags' onChange={(e) => { setBookTags(e.target.value) }} />
+                <button style={{ margin: '54px 32px' }} type="submit" className='btn btn-primary' disabled={submitBtnDisable}>Add Artwork</button>
 
-            <button onClick={() => handleSubmit()} style={{ margin: '54px 32px' }} type="submit" className='btn btn-primary'>Add Book</button>
+                <button onClick={(e) => {
+                    e.preventDefault()
+                    reset()
+                    setInnerContent(<NovelList />)
+                }} style={{ margin: '54px 0' }} className='btn btn-light'>Cancel</button>
 
-            <button onClick={() => setInnerContent(<NovelList />)} style={{ margin: '54px 0' }} className='btn btn-light'>Cancel</button>
+            </form>
         </div>
     );
 };

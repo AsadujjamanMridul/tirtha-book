@@ -14,7 +14,7 @@ const Chapters = ({ novel }) => {
         <div className='min-vh-100 w-100'>
             <div className='title-with-button'>
                 <h3 className='addBook-title'>Chapters</h3>
-                <div><button onClick={() => setInnerContent(<AddChapter/>)} className="btn btn-primary">+Add Chapter</button>
+                <div><button onClick={() => setInnerContent(<AddChapter id={novel._id}/>)} className="btn btn-primary">+Add Chapter</button>
                 </div>
             </div>
 
@@ -22,13 +22,13 @@ const Chapters = ({ novel }) => {
                 <table class="table table-striped table-hover table-bordered">
                     <tbody>
                         {
-                            novel.Chapters.map(chapter => {
+                            novel.chapters.map(chapter => {
                                 return (
                                     <tr>
                                         <td>
                                             <div className='w-100 d-flex justify-content-between align-items-center'>
-                                                <h4 className='chapter-name'>{counter++}. {chapter.Chapter_name}</h4>
-                                                <h5 className='chapter-upload-date center'>Uploaded on - {chapter.Last_update} <span className='right-icon'> <RightOutlined /> </span> </h5>
+                                                <h4 className='chapter-name'>{counter++}. {chapter.chapter_name}</h4>
+                                                <h5 className='chapter-upload-date center'>Uploaded on - {chapter.last_update} <span className='right-icon'> <RightOutlined /> </span> </h5>
                                             </div>
                                         </td>
                                     </tr>
