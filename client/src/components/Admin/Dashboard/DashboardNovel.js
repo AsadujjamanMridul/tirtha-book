@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import AddNovel from '../AddNovel/AddNovel';
-import Chapters from '../Chapters/Chapters';
-import './NovelList.scss'
-import { Popover } from 'antd';
-import { message, Collapse, Modal } from 'antd';
-import { SidebarInnerContent } from '../../../../App'
+import { Popover, message } from 'antd';
 import { Badge } from '@mantine/core';
+import { SidebarInnerContent } from '../../../App'
+import Chapters from '../Novels/Chapters/Chapters';
 
-const NovelList = () => {
+const DashboardNovel = () => {
 
     const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
 
@@ -47,25 +44,9 @@ const NovelList = () => {
 
     return (
         <div>
-            <div style={{
-                padding: '24px 40px',
-                display: 'flex',
-                justifyContent: 'flex-end'
-            }}>
-                <button onClick={() => setInnerContent(<AddNovel />)} className="btn btn-primary">+Add Novel</button>
-            </div>
-
             <div className='chapter-container-div'>
                 <table className="table">
                     <tbody>
-                        <tr>
-                            <td colSpan="6">
-                                <div className='d-flex justify-content-between mx-2 mt-2'>
-                                    <h2 className='table-title'>Novel List</h2>
-                                    <input className='search' placeholder='Search' type='text' onChange={event => setSearchItem(event.target.value)}></input>
-                                </div>
-                            </td>
-                        </tr>
                         <tr className='table-header roboto-16-500 txt-dark'>
                             <th scope="col" className='text-center'>#</th>
                             <th scope="col">Name</th>
@@ -75,14 +56,7 @@ const NovelList = () => {
                             <th scope="col" className='text-center'>Actions</th>
                         </tr>
                         {
-                            novelList.filter(novel => {
-                                if (searchItem === "") {
-                                    return novel
-                                }
-                                else if (novel.name?.toLowerCase().includes(searchItem.toLowerCase())) {
-                                    return novel
-                                }
-                            }).map(novel => {
+                            novelList.slice(Math.max(novelList.length-3, 0)).map(novel => {
                                 return (
                                     <tr className='table-data'>
                                         <td className='text-center'>{count++}</td>
@@ -97,12 +71,11 @@ const NovelList = () => {
                                         <td className='text-center'>
                                             <Popover placement="bottomRight" className='cursor-pointer' content={
                                                 <div className='popOverContent'>
-                                                    <p className='popOverOption' onClick={() => { setInnerContent() }}>Edit</p>
                                                     <p className='popOverOption' onClick={() => { setInnerContent(<Chapters novel={novel} />) }}>Chapters</p>
                                                     <p className='mb-2 popOverOption' onClick={() => deleteNovel(novel._id)}>Delete</p>
                                                 </div>
                                             } trigger="click">
-                                                <svg className='px-1' width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <svg className='px-1' width="30" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <circle cx="12" cy="12" r="12" fill="#625A99" fillOpacity="0.12" />
                                                     <circle cx="11.9999" cy="7.19998" r="1.6" fill="#625A99" />
                                                     <circle cx="11.9999" cy="12" r="1.6" fill="#625A99" />
@@ -123,4 +96,4 @@ const NovelList = () => {
     );
 };
 
-export default NovelList;
+export default DashboardNovel;

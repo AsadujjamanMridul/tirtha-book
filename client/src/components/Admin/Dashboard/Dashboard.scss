@@ -1,0 +1,51 @@
+.dashboard-container {
+    padding: 32px;
+}
+
+.dashboard-card {
+    height: 130px;
+    background: #ffffff;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.07);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.admin-dashboard-icon {
+    color: #4f4f4f;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.dashboard-items-number {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 44px;
+    text-align: center;
+    color: #625a99;
+    margin: 0;
+}
+
+.dashboard-card-title {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+    color: #666666;
+    margin: 0;
+}
+
+.dashboard-section-title {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    color: #333333;
+    margin: 32px;
+}

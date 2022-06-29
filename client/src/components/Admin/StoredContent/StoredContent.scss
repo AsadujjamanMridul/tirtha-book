@@ -1,0 +1,91 @@
+.stored-content-container {
+    margin: 32px;
+}
+
+.stored-content-title {
+    height: 28px;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 32px;
+    color: #333333;
+}
+
+.hero-slider-title {
+    height: 22px;
+    font-family: "Roboto";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 16px;
+    color: #333333;
+}
+
+.btn-stored-content{
+    width: 221px;
+    height: 46px;
+    font-family: "Roboto";
+    font-weight: 400;
+    font-size: 16px;
+    background: #e8daff;
+    border-radius: 0px 7px 7px 0px;
+    &:hover{
+        background-color: hsl(263, 100%, 90%);
+    }
+}
+
+.input-hero-slider {
+    display: flex;
+    align-items: center;
+    height: 46px;
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    cursor: pointer;
+    &:hover{
+        background-color: hsl(0, 0%, 97%);
+        p{
+            color: #3A57E8;
+        }
+    }
+}
+
+.stored-content-imagename {
+    font-family: "Roboto";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    margin: 0;
+    color: #666666;
+}
+
+.novel-thumbnail-title {
+    height: 22px;
+
+    font-family: "Roboto";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 42px;
+    margin-bottom: 16px;
+
+    color: #333333;
+}
+
+.artwork-thumbnail-title {
+    height: 22px;
+
+    font-family: "Roboto";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 42px;
+    margin-bottom: 16px;
+
+    color: #333333;
+}
+
+
+  

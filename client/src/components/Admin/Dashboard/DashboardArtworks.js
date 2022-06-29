@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { message, Popover } from 'antd';
-import { SidebarInnerContent } from '../../../../App'
+import { Popover, message } from 'antd';
+import { SidebarInnerContent } from '../../../App'
+import Chapters from '../Novels/Chapters/Chapters';
 import { Modal } from '@mantine/core'
-import AddArtwork from '../AddArtwork/AddArtwork';
 
-import './ArtworkList.scss'
-
-
-const Artworks = () => {
+const DashboardArtworks = () => {
 
     let count = 1;
     const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
@@ -58,26 +55,9 @@ const Artworks = () => {
                 <img className='img-fluid' src={`https://radiant-spire-58573.herokuapp.com/api/images/${singleArtwork.imagename}`} alt="PreviewImage" />
             </Modal>}
 
-
-            <div style={{
-                padding: '24px 40px',
-                display: 'flex',
-                justifyContent: 'flex-end'
-            }}>
-                <button onClick={() => setInnerContent(<AddArtwork />)} className="btn btn-primary">+Add Artworks</button>
-            </div>
-
             <div className='artwork-container-div bordered'>
                 <table className="table">
                     <tbody>
-                        <tr>
-                            <td colSpan="6">
-                                <div className='d-flex justify-content-between mx-2 mt-2'>
-                                    <h2 className='table-title'>Artworks</h2>
-                                    <input className='search' placeholder='Search' type='text' onChange={event => setSearchItem(event.target.value)}></input>
-                                </div>
-                            </td>
-                        </tr>
                         <tr className='table-header roboto-16-500 txt-dark px-2'>
                             <th className='text-center'>#</th>
                             <th>Title</th>
@@ -87,14 +67,7 @@ const Artworks = () => {
                             <th className='text-center'>Actions</th>
                         </tr>
                         {
-                            artworkList.filter(artwork => {
-                                if (searchItem === "") {
-                                    return artwork
-                                }
-                                else if (artwork.title?.toLowerCase().includes(searchItem.toLowerCase())) {
-                                    return artwork
-                                }
-                            }).map(artwork => {
+                            artworkList.slice(Math.max(artworkList.length-3, 1)).map(artwork => {
 
                                 return (
                                     <tr className='table-data'>
@@ -136,4 +109,4 @@ const Artworks = () => {
     );
 };
 
-export default Artworks;
+export default DashboardArtworks;
