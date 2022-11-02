@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { message, Popover } from 'antd';
 import { SidebarInnerContent } from '../../../../App'
-import { Modal } from '@mantine/core'
+import { Modal, LoadingOverlay } from '@mantine/core'
 import AddArtwork from '../AddArtwork/AddArtwork';
 
 import './ArtworkList.scss'
 
 
-const Artworks = () => {
+const ArtworkList = () => {
 
     let count = 1;
     const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
@@ -15,16 +15,22 @@ const Artworks = () => {
     const [lightboxIsOpen, setLightBoxIsOpen] = useState(false)
     const [singleArtwork, setSingleArtwork] = useState(null)
     const [searchItem, setSearchItem] = useState("")
+    const [loaderVisible, setLoaderVisible] = useState(false);
 
     useEffect(() => {
+        setLoaderVisible(true)
+
         fetch('https://radiant-spire-58573.herokuapp.com/api/artworks')
             .then(res => res.json())
             .then(data => {
                 setArtworkList(data);
+                setLoaderVisible(false)
             });
     }, [])
 
     const deleteNovel = (id) => {
+        setLoaderVisible(true)
+
         const url = `https://radiant-spire-58573.herokuapp.com/api/artworks/${id}`
 
         fetch(url, {
@@ -37,6 +43,7 @@ const Artworks = () => {
                         .then(res => res.json())
                         .then(data => {
                             setArtworkList(data);
+                            setLoaderVisible(false)
                             message.success({
                                 content: 'Artwork has been removed successfully!',
                                 className: 'message'
@@ -57,7 +64,8 @@ const Artworks = () => {
                 <h5 className='artwork-subheader'>{singleArtwork.subheader}</h5>
                 <img className='img-fluid' src={`https://radiant-spire-58573.herokuapp.com/api/images/${singleArtwork.imagename}`} alt="PreviewImage" />
             </Modal>}
-
+            
+            <LoadingOverlay visible={loaderVisible} loaderProps={{ variant: 'bars' }} />
 
             <div style={{
                 padding: '24px 40px',
@@ -136,4 +144,4 @@ const Artworks = () => {
     );
 };
 
-export default Artworks;
+export default ArtworkList;

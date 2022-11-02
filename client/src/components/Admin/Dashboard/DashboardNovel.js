@@ -9,7 +9,6 @@ const DashboardNovel = () => {
     const [innerContent, setInnerContent] = useContext(SidebarInnerContent);
 
     const [novelList, setNovelList] = useState([])
-    const [searchItem, setSearchItem] = useState("")
     let count = 1;
 
     useEffect(() => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { LoadingOverlay } from '@mantine/core';
 import DashboardArtworks from './DashboardArtworks';
 import DashboardNovel from './DashboardNovel';
 import './Dashboard.scss'
@@ -7,25 +8,31 @@ const Dashboard = () => {
 
     const [numberOfBooks, setNumberOfBooks] = useState(0)
     const [numberOfArtworks, setNumberOfArtworks] = useState(0)
+    const [loaderVisible, setLoaderVisible] = useState(false);
 
     useEffect(() => {
+        setLoaderVisible(true)
+
         fetch('https://radiant-spire-58573.herokuapp.com/api/novels')
             .then(res => res.json())
             .then(data => {
                 setNumberOfBooks(data.length)
+                setLoaderVisible(false)
             });
 
-            fetch('https://radiant-spire-58573.herokuapp.com/api/artworks')
+        fetch('https://radiant-spire-58573.herokuapp.com/api/artworks')
             .then(res => res.json())
             .then(data => {
                 setNumberOfArtworks(data.length);
+                setLoaderVisible(false)
             });
 
     }, [])
 
+
     return (
         <div className=' min-vh-100 w-100'>
-
+            <LoadingOverlay visible={loaderVisible} loaderProps={{ variant: 'bars' }} />
             <section className="container dashboard-container">
                 <div className="gap-3 row">
                     <div className="col dashboard-card">
@@ -74,7 +81,7 @@ const Dashboard = () => {
 
                     <div className="col dashboard-card">
                         <div className='w-100 center'>
-                            <svg className='admin-dashboard-icon' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg className='admin-dashboard-icon mb-0' width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7.48219 16.4284C7.55191 16.4284 7.62216 16.4017 7.67532 16.3479L10.1836 13.8397L11.2556 14.9116C11.363 15.0186 11.5363 15.0186 11.6429 14.9116L14.7325 11.8218L16.2494 13.3381C16.3564 13.4453 16.5295 13.4453 16.6365 13.3381C16.7432 13.2311 16.7432 13.0582 16.6365 12.9513L14.9258 11.2413C14.8192 11.1343 14.6459 11.1343 14.5392 11.2413L11.4496 14.3315L10.3773 13.2592C10.2701 13.1525 10.097 13.1525 9.99013 13.2592L7.28815 15.9615C7.18113 16.0685 7.18113 16.2411 7.28815 16.3481C7.34219 16.4018 7.41191 16.4285 7.48216 16.4285L7.48219 16.4284Z" fill="#4F4F4F" />
                                 <path d="M8.81607 12.9398C9.55146 12.9398 10.1497 12.3414 10.1497 11.6058C10.1497 10.8704 9.55133 10.2718 8.81607 10.2718C8.08082 10.2718 7.48242 10.8701 7.48242 11.6058C7.48242 12.3412 8.08064 12.9398 8.81607 12.9398ZM8.81607 10.8191C9.24993 10.8191 9.60291 11.1719 9.60291 11.6058C9.60291 12.0397 9.24976 12.3925 8.81607 12.3925C8.38222 12.3925 8.02941 12.0397 8.02941 11.6058C8.02941 11.1721 8.38221 10.8191 8.81607 10.8191Z" fill="#4F4F4F" />
                                 <path d="M19.6781 7.11153H4.24612C4.11016 7.11153 4 7.2217 4 7.35766V19.3421C4 19.4782 4.11017 19.5886 4.24612 19.5886H19.6781C19.8143 19.5886 19.9246 19.4784 19.9246 19.3421V7.35766C19.9248 7.22204 19.8143 7.11153 19.6781 7.11153ZM19.2279 7.60431L18.7696 8.06259C18.7574 8.06102 18.7466 8.05561 18.7344 8.05561H5.31221L4.86112 7.60434L19.2279 7.60431ZM18.488 8.54818V18.1524H5.5236V8.54818H18.488ZM4.4928 7.93166L5.03158 8.47044V18.2706L4.4928 18.8088V7.93166ZM4.90208 19.0968L5.35407 18.6448H18.7343C18.7348 18.6448 18.7348 18.6443 18.7354 18.6443L19.1874 19.0968L4.90208 19.0968ZM19.4323 18.6448L18.9805 18.1937V8.548L19.4323 8.09672V18.6448Z" fill="#4F4F4F" />
@@ -89,12 +96,12 @@ const Dashboard = () => {
 
             <section className='mb-5'>
                 <h3 className='dashboard-section-title'>Recently Added Novels</h3>
-                <DashboardNovel key='DashboardNovel'/>
+                <DashboardNovel key='DashboardNovel' />
             </section>
 
             <section className='mb-5'>
                 <h3 className='dashboard-section-title'>Recently Added Artworks</h3>
-                <DashboardArtworks key={'DashboardArtworks'}/>
+                <DashboardArtworks key={'DashboardArtworks'} />
             </section>
 
         </div>

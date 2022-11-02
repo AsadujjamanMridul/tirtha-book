@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from "react-hook-form";
+import { LoadingOverlay } from '@mantine/core';
 import { SidebarInnerContent } from '../../../../App'
 import NovelList from '../../Novels/NovelList/NovelList';
 import Artworks from '../ArtworkList/ArtworkList';
@@ -11,6 +12,7 @@ const AddArtwork = () => {
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
     const [image, setImage] = useState(null)
     const [submitBtnDisable, setSubmitBtnDisable] = useState(false)
+    const [loaderVisible, setLoaderVisible] = useState(false);
 
 
     const onSubmit = data => {
@@ -19,8 +21,10 @@ const AddArtwork = () => {
         formData.append('title', data.title)
         formData.append('artist', data.artist)
         formData.append('subheader', data.subheader)
-        
+
         setSubmitBtnDisable(true)
+        setLoaderVisible(true)
+
         fetch('https://radiant-spire-58573.herokuapp.com/api/artworks', {
             method: 'POST',
             body: formData
@@ -28,7 +32,8 @@ const AddArtwork = () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                setInnerContent(<Artworks/>)
+                setLoaderVisible(false)
+                setInnerContent(<Artworks />)
             })
             .catch(error => {
                 console.error(error)
@@ -37,6 +42,7 @@ const AddArtwork = () => {
 
     return (
         <div className='min-vh-100 w-100'>
+            <LoadingOverlay visible={loaderVisible} loaderProps={{ variant: 'bars' }} />
             <h3 className='addBook-title w-100'>Add a Artwork</h3>
 
             <form onSubmit={handleSubmit(onSubmit)}>

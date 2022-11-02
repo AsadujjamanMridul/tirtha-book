@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Popover, message } from 'antd';
+import { Badge, LoadingOverlay } from '@mantine/core';
 import AddNovel from '../AddNovel/AddNovel';
 import Chapters from '../Chapters/Chapters';
-import './NovelList.scss'
-import { Popover } from 'antd';
-import { message, Collapse, Modal } from 'antd';
 import { SidebarInnerContent } from '../../../../App'
-import { Badge } from '@mantine/core';
+import './NovelList.scss'
+
 
 const NovelList = () => {
 
@@ -13,17 +13,22 @@ const NovelList = () => {
 
     const [novelList, setNovelList] = useState([])
     const [searchItem, setSearchItem] = useState("")
+    const [loaderVisible, setLoaderVisible] = useState(false);
+
     let count = 1;
 
     useEffect(() => {
+        setLoaderVisible(true)
         fetch('https://radiant-spire-58573.herokuapp.com/api/novels')
             .then(res => res.json())
             .then(data => {
                 setNovelList(data);
+                setLoaderVisible(false)
             });
     }, [])
 
     const deleteNovel = (id) => {
+        setLoaderVisible(true)
         const url = `https://radiant-spire-58573.herokuapp.com/api/novels/${id}`
 
         fetch(url, {
@@ -36,6 +41,7 @@ const NovelList = () => {
                         .then(res => res.json())
                         .then(data => {
                             setNovelList(data);
+                            setLoaderVisible(false)
                             message.success({
                                 content: 'Book has been removed successfully!',
                                 className: 'message'
@@ -47,6 +53,7 @@ const NovelList = () => {
 
     return (
         <div>
+            <LoadingOverlay visible={loaderVisible} loaderProps={{ variant: 'bars' }} />
             <div style={{
                 padding: '24px 40px',
                 display: 'flex',

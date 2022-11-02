@@ -21,7 +21,7 @@ const AdminPanel = () => {
         <Layout style={{
             minHeight: '100vh'
         }}>
-            <Header>
+            <Header className='admin-custom-header sticky-top'>
                 <Row>
                     <Col flex="256px">
                         <div className='d-flex justify-content-center align-items-center' style={{ height: "80px" }}>
@@ -72,7 +72,7 @@ const AdminPanel = () => {
                     breakpoint="lg"
                     width={256}
                     collapsedWidth="0"
-                    className='shadow-sm'
+                    className='shadow-sm custom-sidebar sticky-bottom'
                     onBreakpoint={broken => {
                         // console.log(broken);
                     }}
@@ -117,7 +117,8 @@ const AdminPanel = () => {
                     <Sidebar/>
 
                 </Sider>
-                <Content>
+
+                <Content className='custom-sidebar-content-container'>
                     <div className="bg-white min-vh-100">
                         {innerContent}
                     </div>
